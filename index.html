@@ -195,21 +195,66 @@ footer strong{color:var(--bl);font-weight:600}
 .svc-card.svc-hover .svc-btn{border-color:rgba(200,169,110,.35);color:var(--bl)}
 .svc-btn:hover{background:var(--b1)}
 .svc-card.svc-hover .svc-btn:hover{background:rgba(200,169,110,.12)}
-@media(max-width:600px){
+/* ── Hamburger menu ──────────────────────────────────────── */
+.hd-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:8px;border-radius:6px;transition:background var(--tr)}
+.hd-hamburger:hover{background:rgba(200,169,110,.1)}
+.hd-hamburger span{display:block;width:20px;height:2px;background:var(--bl);border-radius:2px;transition:all .25s}
+.hd-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hd-hamburger.open span:nth-child(2){opacity:0}
+.hd-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mob-menu{display:none;flex-direction:column;background:var(--bd);border-top:1px solid rgba(200,169,110,.15);padding:.5rem 0}
+.mob-menu.open{display:flex}
+.mob-menu-btn{background:none;border:none;color:rgba(200,169,110,.75);font-family:var(--fu);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:13px 1.5rem;text-align:left;cursor:pointer;border-bottom:1px solid rgba(200,169,110,.08);display:flex;align-items:center;gap:10px;transition:background var(--tr),color var(--tr)}
+.mob-menu-btn:last-child{border-bottom:none}
+.mob-menu-btn:hover{background:rgba(200,169,110,.08);color:var(--bl)}
+.mob-menu-btn svg{flex-shrink:0;opacity:.7}
+.mob-menu-cta{background:var(--bm);color:var(--wh);margin:.75rem 1.5rem;border-radius:8px;padding:13px 1.5rem;justify-content:center;border-bottom:none !important}
+.mob-menu-cta:hover{background:var(--bd) !important;color:var(--wh) !important}
+
+@media(max-width:700px){
+  /* Header */
+  .hd{padding:0 1rem}
+  .hd-name{font-size:15px}
+  .hd-sub{display:none}
+  .hd-pub-btns{display:none !important}
+  .hd-hamburger{display:flex}
+  /* Layout */
+  .wrap{padding:1.75rem 1rem 4rem}
   .g2,.acts{grid-template-columns:1fr}
   .gf{grid-column:1}
   .mr{grid-template-columns:1fr 1fr}
   .mr>*:last-child{grid-column:1/-1}
+  /* Soumission summary */
   .sum{flex-direction:column;gap:1.25rem}
   .sum-big{margin-left:0;text-align:left}
-  .hd-nav .hd-btn span{display:none}
+  /* Nav interne */
+  .hd-nav{display:none !important}
   .step span{display:none}
+  /* Demandes */
   .dem-card{grid-template-columns:1fr}
-  .dem-actions{justify-content:flex-start}
+  .dem-actions{justify-content:flex-start;flex-wrap:wrap}
+  /* Portfolio */
   .port-grid{grid-template-columns:1fr}
-  .port-hero{height:380px}
+  .port-hero{height:420px}
+  .port-hero-title{font-size:36px}
   .port-hero-sub{display:none}
   .port-admin-card{grid-template-columns:80px 1fr}
+  /* Services */
+  .services-grid{grid-template-columns:1fr !important}
+  /* À propos */
+  .apropos-grid{grid-template-columns:1fr !important}
+  .apropos-photo{min-height:240px !important}
+  .apropos-txt{padding:2rem 1.25rem !important}
+  /* Cards */
+  .card{padding:1.25rem 1rem}
+  /* Actions */
+  .acts{grid-template-columns:1fr 1fr}
+  .acts .btn-g{grid-column:1/-1}
+  /* Recap */
+  .recap-row{flex-direction:column;gap:2px}
+  .recap-k{min-width:unset;font-size:10px}
+  /* Mentions légales */
+  .card[style*="border-left"]{padding:1.25rem 1rem}
 }
 </style>
 </head>
@@ -226,7 +271,7 @@ footer strong{color:var(--bl);font-weight:600}
     <button class="hd-btn" onclick="showView('portfolio-admin')"><span>Portfolio</span></button>
     <button class="hd-btn" onclick="deconnexion()" title="Déconnexion" style="opacity:.5"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2H3v12h3M10 5l4 3-4 3M14 8H6"/></svg></button>
   </nav>
-  <div style="display:flex;align-items:center;gap:8px">
+  <div class="hd-pub-btns" style="display:flex;align-items:center;gap:8px">
     <button class="hd-btn" onclick="showView('portfolio')" style="color:rgba(200,169,110,.65);padding:6px 12px">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;vertical-align:middle"><rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 6h14"/></svg>
       <span>Portfolio</span>
@@ -244,7 +289,27 @@ footer strong{color:var(--bl);font-weight:600}
       <span>Espace pro</span>
     </button>
   </div>
+  <!-- Hamburger (mobile seulement) -->
+  <button class="hd-hamburger" id="hd-hamburger" onclick="toggleMobMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- Menu mobile -->
+<nav class="mob-menu" id="mob-menu">
+  <button class="mob-menu-btn" onclick="closeMobMenu();showView('portfolio')">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 6h14"/></svg>Portfolio
+  </button>
+  <button class="mob-menu-btn" onclick="closeMobMenu();showView('services')">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>Services
+  </button>
+  <button class="mob-menu-btn mob-menu-cta" onclick="closeMobMenu();showView('client');goStep(1)">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v12M2 8h12"/></svg>Obtenir une soumission
+  </button>
+  <button class="mob-menu-btn" id="mob-login-btn" onclick="closeMobMenu();ouvrirLogin()">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3 2.5-5 6-5s6 2 6 5"/></svg>Espace pro
+  </button>
+</nav>
 
 <!-- PROGRESS + STEPS (client form only) -->
 <div class="prog" id="prog-wrap" style="display:none"><div class="prog-bar" id="prog-bar" style="width:25%"></div></div>
@@ -703,9 +768,24 @@ window.showView = function(id){
 function unlockInternal(){
   IS_INTERNAL=true;
   document.getElementById('hd-nav').style.display='flex';
-  document.getElementById('hd-login-btn').style.display='none';
+  var loginBtn=document.getElementById('hd-login-btn');
+  if(loginBtn) loginBtn.style.display='none';
+  var mobLogin=document.getElementById('mob-login-btn');
+  if(mobLogin) mobLogin.style.display='none';
   sessionStorage.setItem('mag_auth','1');
 }
+
+/* ── Menu hamburger ────────────────────────────────────── */
+window.toggleMobMenu = function(){
+  var menu=document.getElementById('mob-menu');
+  var btn=document.getElementById('hd-hamburger');
+  var open=menu.classList.toggle('open');
+  btn.classList.toggle('open',open);
+};
+window.closeMobMenu = function(){
+  document.getElementById('mob-menu').classList.remove('open');
+  document.getElementById('hd-hamburger').classList.remove('open');
+};
 
 /* ── Login ─────────────────────────────────────────────── */
 window.ouvrirLogin = function(){
@@ -729,7 +809,10 @@ window.deconnexion = function(){
   IS_INTERNAL=false;
   sessionStorage.removeItem('mag_auth');
   document.getElementById('hd-nav').style.display='none';
-  document.getElementById('hd-login-btn').style.display='';
+  var loginBtn=document.getElementById('hd-login-btn');
+  if(loginBtn) loginBtn.style.display='';
+  var mobLogin=document.getElementById('mob-login-btn');
+  if(mobLogin) mobLogin.style.display='';
   showView('portfolio');
 };
 
